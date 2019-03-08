@@ -11,6 +11,10 @@ int getlen(char* s){
     return i;
 }
 
+int isEqual(char *a, char *b, len){
+    
+}
+
 int strStr(char* haystack, char* needle) {
     int ret=-1;
     //printf("haystack=%s\n", haystack);
@@ -27,8 +31,8 @@ int strStr(char* haystack, char* needle) {
         int i = 0
         int next = i+1;
         
-        while(i < lenHaystack){
-            
+        for(i=0; i < lenHaystack-lenNeedle+1; i++){
+            if
         }
         
     }
