@@ -1,55 +1,27 @@
-def takedata(i):
-    return i[1]
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* twoSum(int* nums, int numsSize, int target) {
+    int i, j;
+    int * ret = NULL;
+    
+    //if(numsSize<2)
+    //    goto out;
+    
+    ret = (int*) malloc(sizeof(int*) * 2);
+    //if(!ret)
+    //    goto out;
+    
+    //ret[0]=ret[1] =0;
+    for(i = 0; i < numsSize; i++){
+        for(j = i+1; j < numsSize; j++){
+            if(nums[i]+nums[j] == target){
+                ret[0] = i;
+                ret[1] = j;
+            }
+        }        
+    }
 
-class Solution:
-    def twoSum(self, nums: 'List[int]', target: 'int') -> 'List[int]':
-        
-        my_nums = []
-        for i in range(len(nums)):
-            my_nums.append((i, nums[i]))
-
-        my_nums.sort(key=takedata)
-        
-        #print(my_nums)
-        
-        ret = []
-        for i in range(len(my_nums)):
-            for j in range(i+1, len(my_nums)):
-                if my_nums[i][1] + my_nums[j][1] < target:
-                    continue
-                elif my_nums[i][1] + my_nums[j][1] > target:
-                    break
-                else:
-                    #found
-                    #print(nums[i], nums[j])
-                    #print(ori_nums)
-                    ret.append(my_nums[i][0])
-                    ret.append(my_nums[j][0])
-        
-        return ret 
-        '''
-        ori_nums=[]
-        for i in nums:
-            ori_nums.append(i)
-        #print(ori_nums)
-        
-        nums.sort()
-        #print(nums)
-        
-        ret = []
-        
-        for i in range(len(nums)):
-            for j in range(i+1, len(nums)):
-                if nums[i] + nums[j] < target:
-                    continue
-                elif nums[i] + nums[j] > target:
-                    break
-                else:
-                    #found
-                    #print(nums[i], nums[j])
-                    #print(ori_nums)
-                    ret.append(ori_nums.index(nums[i]))
-                    ret.append(ori_nums.index(nums[j]))
-        
-        return ret 
-        '''
+//out:
+    return ret;
+}
