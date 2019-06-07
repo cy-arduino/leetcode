@@ -9,50 +9,44 @@
  *     struct ListNode *next;
  * };
  */
-struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-    struct ListNode* A = l1;
-    struct ListNode* B = l2;
-    struct ListNode* ret = NULL;
-    struct ListNode* new = NULL;
-    struct ListNode* prev = NULL;
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    struct ListNode *ret=NULL,*retIter=NULL,*l1p=l1,*l2p=l2;
     
-    int overflow = 0;
-    int sum = 0;
-    int first = 1;
-    while(A!=NULL || B!=NULL || overflow>0 || first>0){
-        //printf("in, A=%x, B=%x\n", A, B);
-        if(first) first = 0;
-        sum = 0;
+    int carry = 0;
+    int partialSum = 0;
+    
+    while(l1p != NULL || l2p !=NULL){
+        partialSum = ((l1p!=NULL)?(l1p->val):0) + ((l2p!=NULL)?(l2p->val):0) + carry;
         
-        sum +=overflow;
+        carry = partialSum / 10;
+        partialSum = partialSum % 10;
+               
+        l1p = (l1p!=NULL)?(l1p->next):NULL;
+        l2p = (l2p!=NULL)?(l2p->next):NULL;
         
-        if(A){
-            sum+=A->val;
-            A = A->next;
+        struct ListNode *newDigit = (struct ListNode *) malloc(sizeof(struct ListNode));
+        newDigit->val = partialSum;
+        newDigit->next = NULL;
+        
+        if(ret == NULL){
+            ret = retIter = newDigit;
+        }else{
+            retIter->next = newDigit;
+            retIter = retIter->next;
         }
         
-        if(B){
-            sum+=B->val;
-            B = B->next;
-        }
         
-        overflow = sum/10;
-        sum = sum%10;
-        //printf("sum=%d, overflow=%d\n", sum, overflow);
-        
-        new = (struct ListNode *) malloc(sizeof(struct ListNode));
-        new->val = sum;
-        new->next = NULL;
-        
-        if(!ret)
-            ret = prev = new;
-        else{
-            prev->next = new;
-            prev = new;
-        }
-        //printf("A=%x, B=%x, ret=%x, ret->next=%x, overflow = %d, first = %d\n", A, B, ret, ret->next, overflow, first);
     }
-    printf("ret!");
+    if(carry > 0){
+        struct ListNode *newDigit = (struct ListNode *)malloc(sizeof(struct ListNode));
+        newDigit->val = carry;
+        newDigit->next = NULL;
+        
+        retIter->next = newDigit;
+        retIter = retIter->next;
+    }
+    
     return ret;
 }
 #endif
