@@ -72,3 +72,51 @@ char * intToRoman(int num){
     return ret;
 }
 
+
+#if 0
+//slower...
+char * intToRoman(int num){
+    char *ret=(char*) calloc(sizeof(char),100);
+    int retIdx = 0;
+    
+	char letter1[]={'I', 'X', 'C', 'M', '\0'};
+	char letter5[]={'V', 'L', 'D', '\0'};
+	int maxLevel = 3;
+	int level = 1000;
+	
+    int k=0;
+	
+	while(maxLevel>=0){
+		
+        k=(level>0)?num/level:num;
+        printf("level=%d, maxLevel=%d, k=%d, num=%d\n", level,maxLevel, k,num);
+		
+        //printf("100, k=%d\n", k);
+		if(k<4){
+			for(int i=k; i>0; i--){
+				ret[retIdx++]=letter1[maxLevel];
+			}
+		}else if(k==4){
+			ret[retIdx++]=letter1[maxLevel];
+			ret[retIdx++]=letter5[maxLevel];
+		}else if(k<9){
+			ret[retIdx++]=letter5[maxLevel];
+			for(int i=k-5; i>0; i--)
+				ret[retIdx++]=letter1[maxLevel];
+		}else if(k==9){
+			ret[retIdx++]=letter1[maxLevel];
+			ret[retIdx++]=letter1[maxLevel+1];
+		}        
+		num = (level>0)?num%level:num;
+		
+		level/=10;
+        maxLevel--;
+	}
+    
+    
+    //printf("ret = %s, retIdx=%d", ret, retIdx);
+    
+    return ret;
+}
+#endif
+
