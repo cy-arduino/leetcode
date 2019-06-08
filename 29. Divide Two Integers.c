@@ -1,37 +1,65 @@
-int divide(int dividend, int divisor) {
-    bool postive = true;
-    long mDividend = (long)dividend;
-    long mDivisor = (long)divisor;
 
-    //to postive
-    if(mDividend < 0){
-        postive = !postive;
-        mDividend = 0-mDividend;
-    }
-    if(mDivisor < 0){
-        postive = !postive;
-        mDivisor = 0-mDivisor;
-    }
+int divide(int dividend, int divisor){
+    //printf("dividend=%d, divisor=%d\n", dividend, divisor);
 
-    long ret = 0;
-    while(mDividend >= mDivisor){
-        long quotient_add = 1;
-        long tmp = mDivisor;
-        while(mDividend >= tmp<<1){
-            quotient_add += quotient_add;
-            tmp<<=1;
+    int sign = 1;
+    
+    unsigned int newDividend, newDivisor;
+    
+    
+    if( (dividend < 0 && divisor >=0) || (dividend >= 0 && divisor < 0) ){
+        sign = -1;
+    }
+    
+    if(dividend < 0){
+        newDividend = (unsigned int)0-dividend;
+    }else{
+        newDividend = dividend;
+    }
+    if(divisor < 0){
+        newDivisor = (unsigned int)0-divisor;
+    }else{
+        newDivisor = divisor;
+    }
+    
+    printf("newDividend=%u, newDivisor=%u, sign=%d\n", newDividend, newDivisor, sign);
+
+    unsigned int ret = 0;
+    
+    
+#if 0 //timeout
+    while(newDividend >= newDivisor){
+        newDividend -= newDivisor;
+        //printf("newDividend = %u\n", newDividend);
+        ret ++;
+    }
+#else
+    unsigned long long tmp = 0;
+    while(newDividend >= newDivisor){
+        int i=0;
+        while(newDivisor<<i < pow(2,31) && (newDivisor<<(i+1)) <= newDividend){
+            i+=1;
         }
-        ret += quotient_add;
-        mDividend -= tmp;
+        tmp=newDivisor<<i;
+        
+        newDividend -=tmp;
+        ret += pow(2,i);
+    }
+#endif
+    
+    if(sign == 1 && ret > pow(2,31)-1){
+        ret = pow(2,31)-1;
+    }
+    if(sign == -1 && ret > pow(2,31)){
+        ret = pow(2,31);
+    }
+    
+    if(sign == -1){
+        return (int)0-ret;
+    }else{
+        return (int)ret;
     }
 
-    if(!postive)
-        ret = 0-ret;
-
-    //check overflow
-    if(ret > 2147483647)
-        ret = 2147483647;
-  
-
-    return ret;
+    
 }
+
