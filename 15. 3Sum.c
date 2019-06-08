@@ -49,7 +49,7 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
                 //TODO: check if solution duplicat
                 int duplicate = 0;
                 for(int j=0; j<returnSize[0]; j++){
-                    if(ret[j][0]==nums[i] && ret[j][1]==nums[l] && ret[j][2]==nums[r]){
+                    if(ret[j][0]==nums[i] && ret[j][1]==nums[l]){
                         //printf("duplicate\n");
                         duplicate = 1;
                         break;
