@@ -6,6 +6,8 @@
  * };
  */
 
+#if 0
+//method 1
 int nextIdx(int i, int n){
     i++;
     if(i==n)
@@ -36,7 +38,7 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
     struct ListNode *toDel = NULL;
     if(buf[i]==NULL){
         //remove head
-        printf("remove head!\n");
+        //printf("remove head!\n");
         toDel = head;
         ret = head->next;
     }else{
@@ -59,3 +61,40 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
     
 }
 
+#else
+
+//method2
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    struct ListNode *mIter = head;
+    struct ListNode *ret = NULL;
+    struct ListNode *toDel = NULL;
+    struct ListNode *toDelPrev = head;
+        
+    //assume n always valid
+    for(int i=0; i< n-1; i++){
+        mIter = mIter->next;
+    }
+    
+    if(mIter->next==NULL){
+        //remove head;
+        ret = head->next;
+        toDel = head;
+    }else{
+        mIter = mIter->next;
+        
+        while(mIter->next){
+            mIter = mIter->next;
+            toDelPrev = toDelPrev->next;
+        }
+        //found
+        toDel = toDelPrev->next;
+        toDelPrev->next = toDel->next;
+        ret = head;
+    }
+    
+    if(toDel)
+        free(toDel);
+    
+    return ret;
+}
+#endif
