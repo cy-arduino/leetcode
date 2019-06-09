@@ -1,100 +1,65 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     struct ListNode *next;
- * };
- */
 
-#if 0
-//method 1
-int nextIdx(int i, int n){
-    i++;
-    if(i==n)
-        i=0;
-    return i;
-}
+int divide(int dividend, int divisor){
+    //printf("dividend=%d, divisor=%d\n", dividend, divisor);
 
-int prevIdx(int i, int n){
-    i--;
-    if(i<0)
-        i=n;
-    return i;
-}
-
-struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
-    int bufSize = n+1;
-    struct ListNode **buf = calloc(bufSize, sizeof(struct ListNode*));
+    int sign = 1;
     
-    struct ListNode* mListIter= head;
-    int i=0;
-    while(mListIter != NULL){
-        buf[i] = mListIter;
-        i = nextIdx(i, bufSize);
-        mListIter = mListIter->next;
+    unsigned int newDividend, newDivisor;
+    
+    
+    if( (dividend < 0 && divisor >=0) || (dividend >= 0 && divisor < 0) ){
+        sign = -1;
     }
     
-    struct ListNode *ret = NULL;
-    struct ListNode *toDel = NULL;
-    if(buf[i]==NULL){
-        //remove head
-        //printf("remove head!\n");
-        toDel = head;
-        ret = head->next;
+    if(dividend < 0){
+        newDividend = (unsigned int)0-dividend;
     }else{
-        ret = head;
-        toDel = buf[i]->next;
-        buf[i]->next = toDel->next;
+        newDividend = dividend;
     }
-    /*
-    for(int k=0; k<bufSize; k++){
-        printf("%d, ",(buf[k])?buf[k]->val:-1);
+    if(divisor < 0){
+        newDivisor = (unsigned int)0-divisor;
+    }else{
+        newDivisor = divisor;
     }
-    printf("\n");
-    printf("toDel = %d, i=%d\n", toDel->val, i);
-    */
     
-    if(toDel)
-        free(toDel);
-    
-    return ret;
-    
-}
+    printf("newDividend=%u, newDivisor=%u, sign=%d\n", newDividend, newDivisor, sign);
 
+    unsigned int ret = 0;
+    
+    
+#if 0 //timeout
+    while(newDividend >= newDivisor){
+        newDividend -= newDivisor;
+        //printf("newDividend = %u\n", newDividend);
+        ret ++;
+    }
 #else
-
-//method2
-struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
-    struct ListNode *mIter = head;
-    struct ListNode *ret = NULL;
-    struct ListNode *toDel = NULL;
-    struct ListNode *toDelPrev = head;
-        
-    //assume n always valid
-    for(int i=0; i< n-1; i++){
-        mIter = mIter->next;
-    }
-    
-    if(mIter->next==NULL){
-        //remove head;
-        ret = head->next;
-        toDel = head;
-    }else{
-        mIter = mIter->next;
-        
-        while(mIter->next){
-            mIter = mIter->next;
-            toDelPrev = toDelPrev->next;
+    unsigned long long tmp = 0;
+    while(newDividend >= newDivisor){
+        int i=0;
+        while(newDivisor<<i < pow(2,31) && (newDivisor<<(i+1)) <= newDividend){
+            i+=1;
         }
-        //found
-        toDel = toDelPrev->next;
-        toDelPrev->next = toDel->next;
-        ret = head;
+        tmp=newDivisor<<i;
+        
+        newDividend -=tmp;
+        ret += pow(2,i);
+    }
+#endif
+    
+    if(sign == 1 && ret > pow(2,31)-1){
+        ret = pow(2,31)-1;
+    }
+    if(sign == -1 && ret > pow(2,31)){
+        ret = pow(2,31);
     }
     
-    if(toDel)
-        free(toDel);
+    if(sign == -1){
+        return (int)0-ret;
+    }else{
+        return (int)ret;
+    }
+
     
-    return ret;
 }
-#endif
+
