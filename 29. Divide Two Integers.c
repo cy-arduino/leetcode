@@ -34,6 +34,11 @@ int divide(int dividend, int divisor){
         ret ++;
     }
 #else
+	// example:
+	// 16/3 = 5..1
+	// 16 = 3*5 + 1
+	//    = 3*(2^2 + 2^0) + 1
+	//    = 3<<2 + 3<<0 + 1      <=====use shift to replace *
     unsigned long long tmp = 0;
     while(newDividend >= newDivisor){
         int i=0;
