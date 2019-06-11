@@ -18,7 +18,7 @@ int** merge(int** intervals, int intervalsSize, int* intervalsColSize, int* retu
     //    printf("[%d,%d]\n", intervals[i][0],intervals[i][1]);
     //}
     
-    int maxRetSize = 10000;
+    int maxRetSize = 100;
     *returnSize=0;
     (*returnColumnSizes) = (int*) malloc(maxRetSize * sizeof(int));
     int **ret = (int**) malloc(maxRetSize * sizeof(int*)); 
@@ -42,9 +42,20 @@ int** merge(int** intervals, int intervalsSize, int* intervalsColSize, int* retu
             }
         }
         
-        //TODO: malloc and copy 
-        ret[*returnSize] = intervals[i];
-            
+        //TODO: realloc ret & returnColumnSizes
+        if((*returnSize) +1 >= maxRetSize){
+            //printf("realloc\n");
+            maxRetSize*=2;
+            ret = realloc(ret, maxRetSize * sizeof(int*)); 
+            *returnColumnSizes = realloc(*returnColumnSizes, maxRetSize * sizeof(int));
+        }
+        
+        //TODO: (done)malloc and copy 
+        //ret[*returnSize] = intervals[i];
+        ret[*returnSize] = malloc(2*sizeof(int));
+        ret[*returnSize][0] = intervals[i][0];
+        ret[*returnSize][1] = intervals[i][1];
+        
         (*returnColumnSizes)[(*returnSize)]=2;
         (*returnSize)++;
         
