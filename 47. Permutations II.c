@@ -1,4 +1,4 @@
-int allocSize = 10000;
+int allocSize = 100;
 
 int comp(void *a, void *b){
     return *((int*)a) - *((int*)b);
@@ -13,10 +13,12 @@ void dump(int *n, int size, char *str){
 }
 
 
-void gen(int* nums, int numsSize, int**ret, int* returnSize, int* returnColumnSizes, int *buf, int bufSize){
+void gen(int* nums, int numsSize, int***retP, int* returnSize, int**returnColumnSizesP, int *buf, int bufSize){
     //printf("\ngen()\n");
     //dump(nums, numsSize, "nums\t");
     //dump(buf, bufSize, "buf\t");
+    int **ret = *retP;
+    int *returnColumnSizes = *returnColumnSizesP;
     
     if(numsSize>0){
         for(int i=0; i<numsSize; i++){
@@ -37,7 +39,7 @@ void gen(int* nums, int numsSize, int**ret, int* returnSize, int* returnColumnSi
             }
             
             //recursive
-            gen(nums, numsSize-1, ret, returnSize, returnColumnSizes, buf, bufSize);
+            gen(nums, numsSize-1, retP, returnSize, returnColumnSizesP, buf, bufSize);
             
             
             //insert tmp into nums[i]
@@ -60,14 +62,32 @@ void gen(int* nums, int numsSize, int**ret, int* returnSize, int* returnColumnSi
         }
         
         //realloc if need
-        if((*returnSize)+1>=allocSize){
+        
+        if((*returnSize) >= allocSize){
             allocSize*=2;
-            ret = realloc(ret, allocSize*sizeof(int*));
+            ret = realloc(ret, allocSize*sizeof(int*));            
+            if(ret == NULL){
+                printf("realloc ret failed\n");
+                return;
+            }else{
+				*retP=ret;
+            }
+			
 			returnColumnSizes = realloc(returnColumnSizes, allocSize * sizeof(int));
+            if(returnColumnSizes == NULL){
+                printf("realloc returnColumnSizes failed!\n");
+                return;
+            }else{
+                *returnColumnSizesP=returnColumnSizes;
+            }
         }
+        
         ret[(*returnSize)]=newElem;
+        
         returnColumnSizes[(*returnSize)]=bufSize;
-        (*returnSize)++;
+        (*returnSize)+=1;
+        
+        
     }else{
         printf("Error!\n");
     }
@@ -92,7 +112,7 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumn
     int *buf = malloc(numsSize * sizeof(int));
     int bufSize = 0;
     
-    gen(nums, numsSize, ret, returnSize, (*returnColumnSizes), buf, bufSize);
+    gen(nums, numsSize, &ret, returnSize, returnColumnSizes, buf, bufSize);
     
     free(buf);
     
