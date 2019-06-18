@@ -5,6 +5,8 @@
  *     struct ListNode *next;
  * };
  */
+ 
+//for debug
 void dumpList(struct ListNode *head, char *str){
     printf("%s: ", str);
     while(head->next){
@@ -13,23 +15,25 @@ void dumpList(struct ListNode *head, char *str){
     }
     printf("\n");
 }
+
+//use myHead to maintain head become NULL
 struct ListNode* partition(struct ListNode* head, int x){
     
     
     struct ListNode tmp[2];
     struct ListNode *myHead = &(tmp[0]);
-    struct ListNode *delHead = &(tmp[1]);        
     myHead->next = head;
     myHead->val = -1;
+	
+    struct ListNode *delHead = &(tmp[1]);        
     delHead->next = NULL;
     
     struct ListNode *insPoint = NULL;
     
     struct ListNode *iter;
     struct ListNode *iter2;
-    
-    struct ListNode *ret = NULL;
-        
+
+	//delete Nodes that <x from myHead
     iter = myHead;
     while(iter && iter->next){
         if(iter->next->val <x){  
@@ -50,7 +54,7 @@ struct ListNode* partition(struct ListNode* head, int x){
     //dumpList(myHead, "list");
     //dumpList(delHead, "deleted");
     
-    //find insert point
+    //find the insert point
     insPoint = myHead;
     while(insPoint && insPoint->next){
         if(insPoint->next->val >= x){
@@ -61,6 +65,7 @@ struct ListNode* partition(struct ListNode* head, int x){
     }
     //printf("insert point=%d\n", insPoint->val);
         
+	//insert Nodes from deleted into myHead
     iter2 = delHead;
     while(iter2->next){
         struct ListNode *toIns = iter2->next;
