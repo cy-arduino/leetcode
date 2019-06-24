@@ -48,7 +48,7 @@ void dumpQueue(char *s, struct MyListNode **q){
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
     int **ret;
     int retSize=0;
     int maxRetSize=100;
@@ -107,10 +107,10 @@ int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes
         (*returnColumnSizes)[retSize] = queueSize;
         
         int colIdx = 0;
-        while(queue){
-            struct TreeNode *tn = queueRmHead(&queue);
-            ret[retSize][colIdx++] = tn->val;
-        }
+		while(queue){
+			struct TreeNode *tn = queueRmHead(&queue);
+			ret[retSize][colIdx++] = tn->val;
+		}
         retSize++;
         
         //printf("queueSize = %d, retSize=%d\n", queueSize);
