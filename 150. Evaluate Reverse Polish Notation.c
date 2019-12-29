@@ -25,6 +25,7 @@ int pop(int *stack, int *stackSize){
 int evalRPN(char ** tokens, int tokensSize){
     int *stack = malloc(tokensSize * sizeof(int));
     int stackSize = 0;
+	int ret = 0;
     
     for(int i=0; i<tokensSize; i++){
         //printf("check tokens[%d]=%s, tokensSize=%d\n", i, tokens[i], tokensSize);
@@ -67,8 +68,11 @@ int evalRPN(char ** tokens, int tokensSize){
             push(stack, &stackSize, a, tokensSize);
         }
     }
-    
-    return pop(stack, &stackSize);
+    ret = pop(stack, &stackSize);
+	
+	free(stack);
+	
+    return ret;
 
 }
 
