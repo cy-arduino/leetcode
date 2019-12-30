@@ -1,3 +1,19 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+ 
+/*
+time: O(n)
+space: O(n)
+
+DFS, calculate each level at a time.
+*/
+
 ////////////////
 //list
 ////////////////
