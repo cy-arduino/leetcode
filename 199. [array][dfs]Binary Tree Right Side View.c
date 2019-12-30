@@ -9,14 +9,14 @@
 
 /*
 time: O(n)
-space: avg. O{logn)
-Traverse all node and update it's level' value
+space: avg. O(logn)
+
+BFS, traverse all node and update it's level's value
 */
 
 int maxRetSize = 100;
 
-
-void recursive(struct TreeNode *root, int **ret, int *returnSize, int level){
+void dfs(struct TreeNode *root, int **ret, int *returnSize, int level){
     if(root){
         
         if(*returnSize < level+1){
@@ -31,10 +31,10 @@ void recursive(struct TreeNode *root, int **ret, int *returnSize, int level){
         (*ret)[level] = root->val;
         
         //left
-        recursive(root->left, ret, returnSize, level+1);
+        dfs(root->left, ret, returnSize, level+1);
         
         //right
-        recursive(root->right, ret, returnSize, level+1);
+        dfs(root->right, ret, returnSize, level+1);
     }
 }
 
@@ -47,7 +47,7 @@ int* rightSideView(struct TreeNode* root, int* returnSize){
     int *ret = calloc(maxRetSize, sizeof(int));
     *returnSize = 0;
     
-    recursive(root, &ret, returnSize, 0);    
+    dfs(root, &ret, returnSize, 0);    
         
     return ret;
 
