@@ -9,7 +9,7 @@
  
 /*
 time: O(n)
-space: O(n)
+space: O(nlogn)
 
 DFS, calculate each level at a time.
 */
